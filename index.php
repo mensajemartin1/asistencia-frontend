@@ -327,6 +327,36 @@
         </article>
       </div>
     </section>
+
+    <section style="margin-top: 64px;">
+      <h2 style="font-family: 'Merriweather', serif; font-size: 1.8rem; color: var(--primary-dark); margin-bottom: 32px;">Equipo de desarrollo</h2>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; max-width: 800px;">
+        <div class="info-card">
+          <h3 style="color: var(--accent); margin-top: 0;">📚 Grupo 803</h3>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px;">
+            <div style="font-size: 0.95rem; color: var(--text);">
+              <p style="margin: 6px 0;"><strong>Luis Almir</strong></p>
+              <p style="margin: 6px 0;"><strong>Luis Adrián</strong></p>
+              <p style="margin: 6px 0;"><strong>Héctor</strong></p>
+              <p style="margin: 6px 0;"><strong>Jesús</strong></p>
+              <p style="margin: 6px 0;"><strong>José</strong></p>
+            </div>
+            <div style="font-size: 0.95rem; color: var(--text);">
+              <p style="margin: 6px 0;"><strong>Araceli</strong></p>
+              <p style="margin: 6px 0;"><strong>Arlin</strong></p>
+              <p style="margin: 6px 0;"><strong>Alejandro</strong></p>
+              <p style="margin: 6px 0;"><strong>Reinaldo</strong></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card" style="border-left-color: var(--accent);">
+          <h3 style="color: var(--primary-dark); margin-top: 0;">👨‍🏫 Docente</h3>
+          <p style="font-size: 1.2rem; color: var(--primary-dark); font-weight: 700; margin: 16px 0 0;">Maestro Martín</p>
+          <p style="color: var(--text-muted); margin-top: 12px;">Coordinador del proyecto de Sistema de Asistencia • ITSZ</p>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer>
