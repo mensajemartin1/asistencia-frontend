@@ -1,0 +1,276 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────
+   DESIGN TOKENS — Tailwind v4 @theme
+──────────────────────────────────────────────────────────────── */
+@theme {
+  --color-primary:        #1e40af;
+  --color-primary-dark:   #1e3a8a;
+  --color-primary-light:  #3b82f6;
+  --color-accent:         #dc2626;
+  --color-accent-light:   #fca5a5;
+
+  --color-surface:        #ffffff;
+  --color-muted:          #f8f9fa;
+  --color-border:         #e5e7eb;
+  --color-text:           #1f2937;
+  --color-text-muted:     #6b7280;
+
+  --color-success:        #16a34a;
+  --color-warning:        #d97706;
+  --color-error:          #dc2626;
+
+  --font-sans:  'Inter', 'Open Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Merriweather', Georgia, ui-serif, serif;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   BASE
+──────────────────────────────────────────────────────────────── */
+@layer base {
+  html  { font-size: 16px; scroll-behavior: smooth; }
+  body  { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+  h1, h2, h3 { font-family: var(--font-serif); }
+  a     { color: inherit; text-decoration: none; }
+  input, select, textarea { font-family: var(--font-sans); }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   COMPONENTES — solo utilidades nativas en @apply (v4)
+──────────────────────────────────────────────────────────────── */
+@layer components {
+
+  /* ── Botones base compartido ── */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2
+           px-5 py-2.5 rounded-lg font-semibold text-sm
+           transition-all duration-200 cursor-pointer
+           border-0 no-underline whitespace-nowrap select-none;
+  }
+  .btn:disabled { @apply opacity-50 cursor-not-allowed; }
+  .btn:active:not(:disabled) { @apply scale-[0.98]; }
+  .btn-full { @apply w-full; }
+  .btn-loading { @apply pointer-events-none opacity-70; }
+  .btn-loading::after {
+    content: '';
+    @apply inline-block w-3.5 h-3.5 ml-2 rounded-full border-2 border-current border-t-transparent animate-spin;
+  }
+
+  /* Variantes — no referencian .btn para no romper @apply */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2
+           px-5 py-2.5 rounded-lg font-semibold text-sm
+           transition-all duration-200 cursor-pointer whitespace-nowrap select-none
+           bg-primary text-white shadow-sm no-underline;
+  }
+  .btn-primary:hover:not(:disabled) { @apply bg-primary-dark shadow-md; }
+  .btn-primary:active:not(:disabled) { @apply scale-[0.98]; }
+  .btn-primary:disabled { @apply opacity-50 cursor-not-allowed; }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2
+           px-5 py-2.5 rounded-lg font-semibold text-sm
+           transition-all duration-200 cursor-pointer whitespace-nowrap select-none
+           bg-surface text-primary border-2 border-primary no-underline;
+  }
+  .btn-secondary:hover:not(:disabled) { @apply bg-primary-light text-white; }
+  .btn-secondary:active:not(:disabled) { @apply scale-[0.98]; }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2
+           px-5 py-2.5 rounded-lg font-semibold text-sm
+           transition-all duration-200 cursor-pointer whitespace-nowrap
+           bg-transparent text-primary no-underline;
+  }
+  .btn-ghost:hover:not(:disabled) { @apply bg-blue-50; }
+
+  /* ── Inputs ── */
+  .input {
+    @apply w-full px-4 py-2.5 text-sm rounded-lg
+           border border-border bg-surface text-text
+           placeholder:text-text-muted outline-none
+           transition duration-200;
+  }
+  .input:focus { @apply border-primary-light ring-2 ring-primary-light/20; }
+  .input-error { @apply border-error ring-2 ring-error/20; }
+
+  .label   { @apply block text-sm font-semibold text-text mb-1.5; }
+  .form-group { @apply mb-5; }
+
+  /* ── Cards ── */
+  .card {
+    @apply bg-surface rounded-xl border border-border shadow-sm p-6;
+  }
+  .card-hover {
+    @apply transition-all duration-200 hover:shadow-lg hover:-translate-y-1;
+  }
+  .card-title {
+    @apply font-bold text-primary-dark;
+    font-family: var(--font-serif);
+  }
+
+  /* ── Badges ── */
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
+  }
+  .badge-primary { @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-primary; }
+  .badge-success { @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-success; }
+  .badge-warning { @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-warning; }
+  .badge-error   { @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-error; }
+
+  /* ── Tabla ── */
+  .table-wrap { @apply overflow-x-auto rounded-xl border border-border bg-surface; }
+  .table      { @apply w-full text-sm border-collapse; }
+  .table thead tr { @apply bg-primary; }
+  .table th   { @apply px-4 py-3 text-left font-semibold text-white whitespace-nowrap; }
+  .table td   { @apply px-4 py-3 border-b border-border text-text; }
+  .table tbody tr:last-child td { @apply border-b-0; }
+  .table tbody tr:hover { @apply bg-blue-50/50; }
+
+  /* ── Mensajes inline ── */
+  .msg { @apply hidden text-sm text-center px-4 py-3 rounded-lg; }
+  .msg.visible { @apply block; }
+  .msg.success { @apply bg-green-50 text-green-800; }
+  .msg.error   { @apply bg-red-50 text-red-800; }
+
+  /* ── Navbar ── */
+  .navbar {
+    @apply bg-surface border-b-2 border-primary shadow-sm
+           sticky top-0 z-50 px-5 py-4 flex items-center justify-between;
+  }
+  .navbar-brand  { @apply flex items-center gap-4; }
+  .navbar-links  { @apply flex items-center gap-6 list-none; }
+  .navbar-links a {
+    @apply text-sm font-semibold text-text transition-colors duration-200;
+  }
+  .navbar-links a:hover { @apply text-primary; }
+
+  /* ── Page wrappers ── */
+  .page          { @apply min-h-screen bg-muted; }
+  .page-content  { @apply max-w-5xl mx-auto px-5 py-8; }
+  .page-content-wide { @apply max-w-6xl mx-auto px-5 py-8; }
+
+  /* ── Sidebar layout ── */
+  .app-layout { @apply flex min-h-screen; }
+  .app-main   { @apply flex-1 min-h-screen bg-muted; margin-left: 256px; }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    @apply fixed top-0 left-0 bottom-0 z-40 flex flex-col bg-primary-dark overflow-y-auto;
+    width: 256px;
+  }
+  .sidebar-logo {
+    @apply flex items-center gap-3 px-5 py-5 border-b border-white/10 shrink-0;
+  }
+  .sidebar-nav  { @apply flex-1 px-3 py-4 flex flex-col gap-0.5; }
+  .sidebar-foot { @apply shrink-0 px-4 py-4 border-t border-white/10; }
+
+  .nav-label {
+    @apply text-[10px] font-bold uppercase tracking-widest text-blue-400 px-3 pt-4 pb-1;
+  }
+  .nav-item {
+    @apply flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium
+           text-blue-200 transition-all duration-150 no-underline;
+  }
+  .nav-item:hover  { @apply bg-white/8 text-white; }
+  .nav-item.active { @apply bg-white/15 text-white font-semibold; }
+  .nav-item svg    { @apply w-4 h-4 shrink-0 opacity-80; }
+  .nav-item.active svg { @apply opacity-100; }
+
+  /* ── Stats cards ── */
+  .stat-card {
+    @apply bg-surface rounded-xl border border-border shadow-sm p-6 border-l-4 flex flex-col gap-1;
+  }
+  .stat-value { @apply text-3xl font-bold; }
+  .stat-label { @apply text-xs text-text-muted uppercase tracking-wide; }
+  .stat-sub   { @apply text-xs text-text-muted; }
+
+  /* ── Modals ── */
+  .modal-backdrop {
+    @apply fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4;
+  }
+  .modal-box {
+    @apply bg-surface rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto;
+  }
+  .modal-head {
+    @apply flex items-center justify-between px-6 py-4 border-b border-border;
+  }
+  .modal-body   { @apply px-6 py-5; }
+  .modal-foot   { @apply flex justify-end gap-3 px-6 py-4 border-t border-border; }
+
+  /* ── Top bar inside sidebar layout ── */
+  .topbar {
+    @apply flex items-center justify-between px-6 py-4 bg-surface border-b border-border;
+  }
+
+  /* ── Progress bar ── */
+  .progress-bar {
+    @apply h-2 rounded-full bg-border overflow-hidden;
+  }
+  .progress-fill {
+    @apply h-full rounded-full transition-all duration-500;
+  }
+
+  /* ── Sidebar: overlay mode on mobile ── */
+  .sidebar-overlay {
+    @apply fixed inset-0 bg-black/40 z-30 lg:hidden;
+  }
+
+  /* ── Student mobile layout ── */
+  .student-app {
+    @apply min-h-screen bg-muted flex flex-col;
+    padding-bottom: 4.5rem;
+  }
+  .student-appbar {
+    @apply sticky top-0 z-40 flex items-center justify-between px-4 py-3 bg-primary-dark text-white;
+  }
+  .student-content {
+    @apply flex-1 w-full max-w-lg mx-auto px-4 py-5;
+  }
+
+  /* ── Bottom navigation ── */
+  .bottom-nav {
+    @apply fixed bottom-0 left-0 right-0 z-40 flex bg-surface border-t border-border;
+    height: 4rem;
+  }
+  .bottom-nav-item {
+    @apply flex-1 flex flex-col items-center justify-center gap-0.5
+           text-[10px] font-semibold text-text-muted transition-colors no-underline;
+  }
+  .bottom-nav-item:hover  { @apply text-primary; }
+  .bottom-nav-item.active { @apply text-primary; }
+  .bottom-nav-item svg    { @apply w-5 h-5; }
+
+  /* ── Onboarding wizard ── */
+  .wizard-step { @apply hidden; }
+  .wizard-step.active { @apply block; }
+  .step-dot {
+    @apply w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold
+           border-2 border-border text-text-muted transition-all duration-200;
+  }
+  .step-dot.done  { @apply bg-success border-success text-white; }
+  .step-dot.active { @apply bg-primary border-primary text-white; }
+  .step-line { @apply flex-1 h-0.5 bg-border; }
+
+  /* ── QR card mobile ── */
+  .qr-card {
+    @apply bg-surface rounded-xl border border-border shadow-sm p-6 text-center py-8;
+  }
+  .qr-canvas-wrap {
+    @apply inline-flex items-center justify-center p-3 bg-white rounded-2xl shadow-md mx-auto;
+  }
+}
+
+/* ── Sidebar responsive (tablet/mobile) ── */
+@media (max-width: 1023px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+  .app-main {
+    margin-left: 0 !important;
+  }
+}

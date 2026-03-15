@@ -1,0 +1,46 @@
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius);
+  font-size: var(--text-sm);
+  border: 1px solid transparent;
+}
+
+.alert--success {
+  background: #f0fdf4;
+  border-color: #86efac;
+  color: #166534;
+}
+
+.alert--error {
+  background: #fef2f2;
+  border-color: #fca5a5;
+  color: #991b1b;
+}
+
+.alert--warning {
+  background: #fffbeb;
+  border-color: #fcd34d;
+  color: #92400e;
+}
+
+.alert--info {
+  background: #eff6ff;
+  border-color: #93c5fd;
+  color: #1e40af;
+}
+
+/* Usado para mensajes inline en formularios */
+.msg {
+  font-size: var(--text-sm);
+  padding: var(--space-3);
+  border-radius: var(--radius);
+  text-align: center;
+  display: none;
+}
+
+.msg.visible  { display: block; }
+.msg.success  { background: #f0fdf4; color: #166534; }
+.msg.error    { background: #fef2f2; color: #991b1b; }
