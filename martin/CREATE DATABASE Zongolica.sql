@@ -1,9 +1,11 @@
+-- ESTE CAMBIO LO ACABO DE HACER DE ULTIMA HORA
+
 CREATE DATABASE Zongolica;
 USE Zongolica;
 
 CREATE TABLE Usuarios(
     id INT NOT NULL AUTO_INCREMENT,
-    nombre VARCHAR(80),
+    nombre VARCHAR(120),
     correo VARCHAR(120),
     rol VARCHAR(80),
     PRIMARY KEY (id)
