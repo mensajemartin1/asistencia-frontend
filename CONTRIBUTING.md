@@ -1,110 +1,188 @@
-# CONTRIBUTING.md
+# Guía de Contribución
 
-## Contribuir al Sistema de Asistencia
+Gracias por contribuir al **Sistema de Control de Asistencia ITSZ**. Esta guía explica el flujo de trabajo del equipo para colaborar sin conflictos.
 
-Gracias por aportar al proyecto. Este documento explica el flujo oficial para colaborar sin conflictos cuando el sistema esta dividido en modulos.
+---
 
-## Objetivo del flujo
+## Flujo general de trabajo
 
-- Cada integrante trabaja en su propia rama.
-- Cada integrante sube su modulo en una carpeta con su nombre.
-- El equipo integrador une todo en una rama `integracion`.
-- Cuando todo esta validado, se hace merge a `main`.
-
-## Estructura esperada
-
-Cada persona debe trabajar dentro de su carpeta personal en la raiz del proyecto:
-
-```text
-asistencia-frontend/
-	nombre_persona/
-		modulo-x/
+```
+main  ←──── integracion  ←──── feature/nombre-modulo
+                                (cada integrante)
 ```
 
-## Configuracion de remotos (fork + repo original)
+1. Cada integrante trabaja en su propia rama `feature/`.
+2. Los cambios van a `integracion` mediante Pull Request.
+3. Cuando todo está validado, `integracion` se fusiona con `main`.
+4. **Nunca se hace push directo a `main`.**
 
-Si clonaste el repo original, la configuracion recomendada es:
+---
 
-- `origin` -> tu fork
-- `upstream` -> repositorio original
-
-Comandos:
+## Configuración inicial (solo una vez)
 
 ```bash
-git remote rename origin upstream
-git remote add origin https://github.com/TU-USUARIO/asistencia-frontend.git
-git remote -v
+git config --global user.name "Tu Nombre Completo"
+git config --global user.email "matricula@zongolica.tecnm.mx"
+
+git clone https://github.com/joseorteha/asistencia-frontend.git
+cd asistencia-frontend
+
+npm install
+npm run build
+php -S localhost:3000 router.php
 ```
 
-## Pasos para contribuir
+---
 
-### 1) Sincronizar rama principal
+## Convenciones de ramas
+
+| Tipo | Formato | Ejemplo |
+|---|---|---|
+| Nueva funcionalidad | `feature/nombre-descripcion` | `feature/arlyn-modulo-reportes` |
+| Corrección de bug | `fix/descripcion` | `fix/jesus-login-redirect` |
+| Mejora de estilos | `style/descripcion` | `style/kevin-dashboard-mobile` |
+
+---
+
+## Flujo de trabajo diario
+
+### 1. Sincronizar antes de empezar
 
 ```bash
 git checkout main
-git pull upstream main
-git push origin main
+git pull origin main
 ```
 
-### 2) Crear rama de trabajo
-
-Nombra la rama por modulo:
+### 2. Crear o retomar tu rama
 
 ```bash
-git checkout -b feature/nombrepersona-nombremodulo
+# Nueva rama
+git checkout -b feature/tunombre-modulo
+
+# Retomar rama existente
+git checkout feature/tunombre-modulo
+git pull origin feature/tunombre-modulo
 ```
 
-Ejemplo: `feature/jesus-login-asistencia`
+### 3. Hacer cambios y confirmarlos
 
-### 3) Desarrollar en tu carpeta
-
-- Crea o usa tu carpeta personal.
-- Sube ahi tus archivos del modulo.
-- Evita editar modulos de otros companeros sin coordinacion.
-
-### 4) Guardar cambios
+Usa el formato **Conventional Commits** para los mensajes:
 
 ```bash
-git add .
-git commit -m "feat: agrega modulo de asistencia de nombrepersona"
-git push -u origin feature/nombrepersona-nombremodulo
+git add archivo1.php src/js/modules/miModulo.js
+git commit -m "feat: agrega vista de historial para el alumno"
 ```
 
-### 5) Crear Pull Request
+| Prefijo | Cuándo usarlo |
+|---|---|
+| `feat:` | Nueva funcionalidad |
+| `fix:` | Corrección de bug |
+| `style:` | Cambios de CSS o UI sin lógica |
+| `refactor:` | Reorganización de código |
+| `docs:` | Solo documentación |
+| `chore:` | Tareas de mantenimiento (build, deps) |
 
-- Crea PR desde tu rama hacia `integracion`.
-- Explica que modulo agregaste o modificaste.
-- Agrega evidencia si aplica (capturas, pruebas, pasos).
+### 4. Subir la rama
 
-## Proceso de integracion (equipo integrador)
+```bash
+git push -u origin feature/tunombre-modulo
+```
+
+### 5. Abrir Pull Request
+
+- Desde GitHub, crea un PR de tu rama hacia `integracion`.
+- Título claro: `feat: módulo de asistencia docente`
+- Describe qué hiciste, qué archivos tocaste y cómo probarlo.
+- Agrega capturas de pantalla si es una vista nueva.
+
+---
+
+## Estructura del proyecto
+
+Al agregar archivos nuevos, respeta la estructura existente:
+
+```
+modules/
+  tu_modulo/
+    views/        ← archivos .php (HTML + PHP)
+    controllers/  ← archivos Model.php (JSON API)
+
+src/js/modules/
+  tuModulo.js     ← lógica JS del módulo
+
+config/partials/  ← componentes reutilizables (head, footer, navbar)
+database/         ← migraciones SQL
+```
+
+Si tu módulo necesita un nuevo `data-page`, agrégalo en `src/js/main.js`:
+
+```js
+if (page === 'mi-pagina') import('./modules/miModulo.js')
+```
+
+Y después ejecuta:
+
+```bash
+npm run build
+```
+
+---
+
+## Proceso de integración (Jesus / integrador)
 
 1. Revisar y aprobar PRs hacia `integracion`.
-2. Probar que los modulos no rompan el proyecto.
+2. Verificar que los módulos no rompan rutas ni base de datos.
 3. Resolver conflictos en `integracion`.
-4. Crear PR de `integracion` hacia `main`.
-5. Hacer merge final a `main`.
+4. Ejecutar `npm run build` y probar en local.
+5. Crear PR de `integracion` → `main` con resumen de cambios.
 
-## Como resolver conflictos
+---
 
-1. Ejecuta `git status` para ver archivos en conflicto.
-2. Abre los archivos y revisa marcas `<<<<<<<`, `=======`, `>>>>>>>`.
-3. Deja el codigo correcto y guarda.
-4. Ejecuta:
+## Resolver conflictos de merge
 
 ```bash
+# Ver archivos en conflicto
+git status
+
+# Abrir el archivo, buscar y resolver:
+# <<<<<<< HEAD
+#   tu código
+# =======
+#   código del otro
+# >>>>>>> rama-de-origen
+
+# Confirmar resolución
 git add .
-git commit -m "fix: resuelve conflictos de merge"
+git commit -m "fix: resuelve conflictos de merge en modulo X"
 git push
 ```
 
-## Buenas practicas
+---
 
-- No hacer push directo a `main`.
-- Un modulo por rama.
-- Commits pequenos y claros.
-- Actualiza tu rama frecuentemente con cambios de `upstream/main`.
-- Si tocas archivos compartidos, avisar al equipo antes.
+## Buenas prácticas
 
-## Ayuda
+- **Un PR por funcionalidad** — no mezcles módulos en un solo PR.
+- **Commits pequeños y frecuentes** — facilita la revisión.
+- **No modifiques archivos de otros** sin coordinación previa.
+- **Comenta el código** cuando la lógica no sea evidente.
+- **Prueba en local antes de hacer push** — ejecuta el servidor y verifica tu módulo.
+- Si tocas `config/database.php`, `router.php` o `src/css/main.css`, avisa al integrador.
 
-Si tienes dudas, abre un issue o escribe al equipo integrador para revisar tu caso.
+---
+
+## Archivos que NO debes subir
+
+Asegúrate de que `.gitignore` excluya:
+
+```
+node_modules/
+public/assets/bundle/
+*.env
+config/database.php   ← cada quien tiene sus credenciales locales
+```
+
+---
+
+## Dudas
+
+Abre un **Issue** en GitHub o comunícate directamente con el integrador del equipo.

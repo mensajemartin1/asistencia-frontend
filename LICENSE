@@ -1,0 +1,122 @@
+LICENCIA DE USO ACADÉMICO — ITSZ
+Sistema de Control de Asistencia
+
+Copyright (c) 2025–2026
+Equipo de Desarrollo — Ingeniería en Sistemas Computacionales, 8° Semestre
+Instituto Tecnológico Superior de Zongolica (TecNM · Campus Zongolica)
+
+Autores:
+  Reinaldo Ajactle Choncoa
+  Arlyn Alfaro Dominguez
+  Hector Ayohua Quechulpa
+  Blanca Rosa Diaz Hernandez
+  Luis Almir Dominguez Puertos
+  Luis Adrian Gutierrez Atlahua
+  Alejandro Hernandez Tepole
+  Kevin Emanuel Ixmatlahua Barojas
+  Jose Bernadino Tlehuactle Ortega
+  Araceli Tlehuactle Tepole
+  Jesus Alberto Rodriguez Puertos
+
+Todos los derechos reservados.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+TÉRMINOS Y CONDICIONES DE USO
+
+1. DEFINICIONES
+
+   "Software" hace referencia al Sistema de Control de Asistencia ITSZ,
+   incluyendo su código fuente, base de datos, documentación, interfaces
+   de usuario y cualquier archivo asociado contenido en este repositorio.
+
+   "Autores" son los integrantes del equipo de desarrollo listados
+   anteriormente, estudiantes del Instituto Tecnológico Superior de
+   Zongolica.
+
+   "Institución" hace referencia al Instituto Tecnológico Superior de
+   Zongolica (ITSZ) y sus unidades académicas afiliadas al TecNM.
+
+2. PERMISOS CONCEDIDOS
+
+   Se concede permiso, de forma gratuita, para:
+
+   a) Usar este Software dentro de las instalaciones y sistemas de la
+      Institución con fines educativos e institucionales.
+
+   b) Estudiar, leer y analizar el código fuente con fines académicos
+      y de aprendizaje.
+
+   c) Realizar modificaciones al Software para adaptarlo a necesidades
+      propias de la Institución, siempre que se mantenga el crédito a
+      los Autores originales.
+
+   d) Compartir el Software o partes del mismo en contextos académicos
+      (presentaciones, trabajos escolares, portafolios estudiantiles)
+      siempre que se cite a los Autores.
+
+3. RESTRICCIONES
+
+   Queda estrictamente PROHIBIDO, sin autorización escrita previa de los
+   Autores:
+
+   a) Usar este Software o cualquier parte del mismo con fines
+      comerciales, lucrativos o de beneficio económico directo o
+      indirecto para terceros.
+
+   b) Distribuir, vender, sublicenciar o ceder este Software a personas
+      u organizaciones externas a la Institución.
+
+   c) Presentar este Software como trabajo propio eliminando o
+      modificando los créditos de los Autores originales.
+
+   d) Usar el nombre del Instituto Tecnológico Superior de Zongolica o
+      de los Autores para promocionar productos derivados sin
+      autorización expresa.
+
+4. CRÉDITO Y ATRIBUCIÓN
+
+   Cualquier uso, derivado o referencia a este Software debe incluir:
+
+   - Los nombres de los Autores listados en el apartado de Copyright.
+   - El nombre de la Institución: Instituto Tecnológico Superior de
+     Zongolica (TecNM).
+   - El año de desarrollo: 2025–2026.
+
+5. PROPIEDAD INTELECTUAL
+
+   Este Software es resultado de un proyecto académico integrador
+   desarrollado por estudiantes del ITSZ. Los derechos morales sobre
+   el trabajo pertenecen a los Autores. La Institución tiene derecho
+   de uso institucional del Software de acuerdo con sus políticas
+   académicas internas.
+
+6. SIN GARANTÍA
+
+   ESTE SOFTWARE SE PROPORCIONA "TAL CUAL", SIN GARANTÍA DE NINGÚN TIPO,
+   EXPRESA O IMPLÍCITA, INCLUYENDO PERO NO LIMITADO A LAS GARANTÍAS DE
+   COMERCIABILIDAD, ADECUACIÓN PARA UN PROPÓSITO PARTICULAR Y NO
+   INFRACCIÓN.
+
+   EN NINGÚN CASO LOS AUTORES SERÁN RESPONSABLES POR DAÑOS DIRECTOS,
+   INDIRECTOS, INCIDENTALES, ESPECIALES O CONSECUENTES QUE RESULTEN DEL
+   USO O LA IMPOSIBILIDAD DE USO DE ESTE SOFTWARE.
+
+7. SOLICITUDES DE USO EXTERNO
+
+   Si una institución, empresa u organización externa al ITSZ desea usar
+   este Software, deberá contactar directamente a los Autores para
+   negociar los términos de uso correspondientes.
+
+   Contacto del repositorio principal:
+   https://github.com/joseorteha/asistencia-frontend
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Este documento constituye el acuerdo completo entre los Autores y cualquier
+usuario o institución respecto al uso del Software. Al usar, copiar o
+modificar cualquier parte de este Software, aceptas los términos descritos
+en esta licencia.
+
+Instituto Tecnológico Superior de Zongolica
+Altas Montañas, Veracruz, México — TecNM
