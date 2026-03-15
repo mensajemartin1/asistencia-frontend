@@ -1,0 +1,33 @@
+{
+  "name": "asistencia-frontend",
+  "version": "1.0.0",
+  "description": "Guia basica de Git para trabajar por modulos sin conflictos.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "clean:bundle": "powershell -Command \"if (Test-Path public/assets/bundle) { Remove-Item public/assets/bundle -Recurse -Force }\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jesus-Puertos/asistencia-frontend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jesus-Puertos/asistencia-frontend/issues"
+  },
+  "homepage": "https://github.com/Jesus-Puertos/asistencia-frontend#readme",
+  "devDependencies": {
+    "vite": "^6.4.1"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.2.1",
+    "chart.js": "^4.5.1",
+    "jsqr": "^1.4.0",
+    "qrcode": "^1.5.4",
+    "tailwindcss": "^4.2.1"
+  }
+}
