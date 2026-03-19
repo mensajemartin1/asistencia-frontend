@@ -5,20 +5,30 @@ $conn = getConnection();
 
 $accion = $_GET["accion"] ?? '';
 
+if ($accion === 'materias') {
+    header('Content-Type: application/json; charset=utf-8');
+    $result = $conn->query("SELECT id, nombre FROM Materias WHERE activa = 1 ORDER BY nombre");
+    echo json_encode($result ? $result->fetch_all(MYSQLI_ASSOC) : []);
+    exit;
+}
+
 $sql    = "";
 $params = [];
 $types  = "";
 
 $base = "SELECT
     al.numero_control,
+    al.matricula,
     al.nombre,
-    al.grupo,
+    COALESCE(g.nombre, '-') AS grupo,
     al.foto,
     m.nombre AS materia,
     a.fecha
 FROM Asistencias a
-INNER JOIN Alumnos al  ON a.idAlumno  = al.id
-INNER JOIN Materias m  ON a.idMateria = m.id";
+INNER JOIN Alumnos al        ON a.idAlumno       = al.id
+INNER JOIN GruposMaterias gm ON a.idGrupoMateria = gm.id
+INNER JOIN Materias m        ON gm.idMateria     = m.id
+LEFT JOIN Grupos g           ON al.idGrupo       = g.id";
 
 if ($accion == "historial") {
 
@@ -34,14 +44,14 @@ if ($accion == "historial") {
 } elseif ($accion == "porGrupo") {
 
     $grupo    = $_GET["grupo"] ?? '';
-    $sql      = $base . " WHERE al.grupo = ? ORDER BY a.fecha DESC";
+    $sql      = $base . " WHERE g.nombre = ? ORDER BY a.fecha DESC";
     $types    = "s";
     $params[] = $grupo;
 
 } elseif ($accion == "porMateria") {
 
     $materia_id = (int) ($_GET["materia_id"] ?? 0);
-    $sql        = $base . " WHERE m.id = ? ORDER BY a.fecha DESC";
+    $sql        = $base . " WHERE gm.idMateria = ? ORDER BY a.fecha DESC";
     $types      = "i";
     $params[]   = $materia_id;
 
@@ -61,6 +71,11 @@ if ($accion == "historial") {
 
 $stmt = $conn->prepare($sql);
 
+if (!$stmt) {
+    echo "<tr><td colspan='6'>Error al preparar consulta</td></tr>";
+    exit;
+}
+
 if ($types && count($params) > 0) {
     $stmt->bind_param($types, ...$params);
 }
@@ -71,12 +86,18 @@ $result = $stmt->get_result();
 if ($result && $result->num_rows > 0) {
 
     while ($fila = $result->fetch_assoc()) {
-        $foto = $fila['foto'] ? "<img src='../assets/img/" . htmlspecialchars($fila['foto']) . "' width='45'>" : "-";
+        $foto = !empty($fila['foto'])
+            ? "<img src='/public/assets/img/" . htmlspecialchars($fila['foto']) . "' width='45' alt='foto'>"
+            : "-";
+
+        $numeroControl = $fila['numero_control'] ?: ($fila['matricula'] ?? '-');
+        $grupo = $fila['grupo'] ?: '-';
+
         echo "<tr>
             <td>{$foto}</td>
-            <td>" . htmlspecialchars($fila['numero_control']) . "</td>
+            <td>" . htmlspecialchars((string)$numeroControl) . "</td>
             <td>" . htmlspecialchars($fila['nombre'])         . "</td>
-            <td>" . htmlspecialchars($fila['grupo'])          . "</td>
+            <td>" . htmlspecialchars((string)$grupo)          . "</td>
             <td>" . htmlspecialchars($fila['materia'])        . "</td>
             <td>" . htmlspecialchars($fila['fecha'])          . "</td>
         </tr>";
