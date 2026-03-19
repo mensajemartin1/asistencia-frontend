@@ -2,6 +2,7 @@ import { request, requestJson } from '../api.js'
 import Chart from 'chart.js/auto'
 
 const tabla = document.getElementById('tabla')
+const materiaSelect = document.getElementById('materia_id')
 let grafica = null
 
 async function cargar(params) {
@@ -16,7 +17,7 @@ async function cargar(params) {
 
 async function cargarGrafica(grupo) {
   try {
-    const datos = await requestJson('../controllers/grafica_grupo.php?grupo=' + grupo)
+    const datos = await requestJson('../controllers/grafica_grupo.php?grupo=' + encodeURIComponent(grupo))
 
     if (grafica) grafica.destroy()
 
@@ -33,6 +34,23 @@ async function cargarGrafica(grupo) {
     })
   } catch {
     console.error('Error al cargar gráfica')
+  }
+}
+
+async function cargarMaterias() {
+  if (!materiaSelect) return
+
+  try {
+    const materias = await requestJson('../controllers/consultasModel.php?accion=materias')
+    const opts = ['<option value="">Seleccionar...</option>']
+
+    materias.forEach((m) => {
+      opts.push(`<option value="${m.id}">${m.nombre}</option>`)
+    })
+
+    materiaSelect.innerHTML = opts.join('')
+  } catch {
+    materiaSelect.innerHTML = '<option value="">Sin materias</option>'
   }
 }
 
@@ -62,3 +80,5 @@ document.getElementById('btnFecha')?.addEventListener('click', () => {
   const fecha = document.getElementById('fecha').value
   if (fecha) cargar({ accion: 'porFecha', fecha })
 })
+
+cargarMaterias()

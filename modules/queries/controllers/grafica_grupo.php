@@ -9,7 +9,8 @@ $stmt = $conn->prepare(
     "SELECT al.nombre, COUNT(a.id) AS total
      FROM Asistencias a
      INNER JOIN Alumnos al ON a.idAlumno = al.id
-     WHERE al.grupo = ?
+    LEFT JOIN Grupos g ON al.idGrupo = g.id
+    WHERE g.nombre = ?
      GROUP BY al.nombre"
 );
 $stmt->bind_param("s", $grupo);

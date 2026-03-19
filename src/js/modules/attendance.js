@@ -3,7 +3,7 @@ import { request, showMsg } from '../api.js'
 const form   = document.getElementById('formAsistencia')
 const tabla  = document.getElementById('tablaAsistencia')
 const msgEl  = document.getElementById('mensajeRegistro')
-const btnEl  = document.querySelector('#formAsistencia .btn--primary')
+const btnEl  = document.getElementById('btnRegistrar')
 
 async function cargarAsistencia() {
   tabla.classList.add('table--loading')
@@ -11,7 +11,7 @@ async function cargarAsistencia() {
     const html = await request('../controllers/obtener_asistencia.php')
     tabla.innerHTML = html
   } catch {
-    tabla.innerHTML = '<tr><td colspan="7" class="table__empty">Error al cargar registros</td></tr>'
+    tabla.innerHTML = '<tr><td colspan="6" class="table__empty">Error al cargar registros</td></tr>'
   } finally {
     tabla.classList.remove('table--loading')
   }
