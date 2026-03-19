@@ -6,7 +6,15 @@ $conn = getConnection();
 date_default_timezone_set("America/Mexico_City");
 $hora_actual = date("H:i:s");
 
-$stmt = $conn->prepare("SELECT nombre FROM Materias WHERE ? BETWEEN horaInicio AND horaFin");
+$stmt = $conn->prepare(
+    "SELECT m.nombre
+     FROM GruposMaterias gm
+     INNER JOIN Materias m ON gm.idMateria = m.id
+     WHERE gm.activo = 1
+       AND ? BETWEEN gm.horaInicio AND gm.horaFin
+     ORDER BY gm.id
+     LIMIT 1"
+);
 $stmt->bind_param("s", $hora_actual);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -77,8 +85,9 @@ require_once __DIR__ . '/../../../config/partials/head.php';
             <div class="form-group">
               <label for="estado" class="label">Estado</label>
               <select id="estado" name="estado" class="input">
-                <option value="Presente">✅ Presente</option>
-                <option value="Ausente">❌ Ausente</option>
+                <option value="presente">✅ Presente</option>
+                <option value="retardo">⏰ Retardo</option>
+                <option value="falta">❌ Falta</option>
               </select>
             </div>
 
