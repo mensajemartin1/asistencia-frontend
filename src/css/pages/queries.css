@@ -1,0 +1,29 @@
+.queries-page {
+  min-height: 100vh;
+  background: var(--color-bg);
+}
+
+.queries-page main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-5);
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: flex-end;
+  margin-bottom: var(--space-6);
+}
+
+.filters .form-group {
+  margin-bottom: 0;
+  flex: 1;
+  min-width: 160px;
+}
+
+.chart-container {
+  max-width: 420px;
+  margin: var(--space-8) auto 0;
+}

@@ -1,123 +1,187 @@
-# asistencia-frontend
+# Sistema de Control de Asistencia — ITSZ
 
-Guia basica de Git para trabajar por modulos sin conflictos.
+> Plataforma institucional para el registro, consulta y generación de reportes de asistencia del **Instituto Tecnológico Superior de Zongolica** (TecNM · Campus Zongolica y unidades académicas de la región Altas Montañas, Veracruz).
 
-## Objetivo
+---
 
-- Cada persona trabaja en su propia rama.
-- Cada persona sube su modulo dentro de una carpeta con su nombre.
-- El equipo integrador junta todo en una rama de integracion.
-- Al final se hace merge a `main`.
+## Descripción
 
-## Flujo general
+Sistema web desarrollado como proyecto integrador por estudiantes de Ingeniería en Sistemas Computacionales del ITSZ. Permite a docentes registrar asistencia mediante códigos QR, a alumnos consultar su historial en tiempo real y a personal administrativo generar reportes por grupo, materia, campus y fecha.
 
-1. No trabajar directo en `main`.
-2. Cada compañero crea su rama `feature/nombre-modulo`.
-3. Cada compañero crea su carpeta `nombre_persona/` y sube ahi su modulo.
-4. Los integradores revisan y unen todo en `integracion`.
-5. Cuando todo este estable, se hace merge de `integracion` a `main`.
+---
 
-## 1) Configuracion inicial (solo una vez por persona)
+## Características principales
 
-```bash
-git config --global user.name "Tu Nombre"
-git config --global user.email "tu_correo@ejemplo.com"
+| Módulo | Descripción |
+|---|---|
+| **Portal de Alumnos** | Registro propio, onboarding con selección de carrera/semestre/grupo, perfil con avatar e intereses, código QR por materia |
+| **Portal Docente** | Dashboard agrupado por campus, lista de grupos y materias por horario, registro de asistencia con QR |
+| **Portal Admin** | Gestión de usuarios, grupos, materias, asignación de docentes, vista de alumnos por grupo |
+| **Control Escolar** | Consultas y reportes filtrados por campus propio, exportación a PDF |
+| **Onboarding** | Wizard guiado de 4 pasos (carrera → semestre → grupo → perfil) que se muestra siempre hasta completarse |
+| **Autenticación** | Dos portales separados: alumnos (auto-registro) y personal institucional (creado por admin), recuperación de contraseña por correo |
+
+---
+
+## Stack tecnológico
+
+| Capa | Tecnología |
+|---|---|
+| Frontend — estilos | Tailwind CSS v4 |
+| Frontend — scripts | Vanilla JS (ES Modules), Vite 6 como bundler |
+| Backend | PHP 8.4 |
+| Base de datos | MySQL 8 |
+| Servidor de desarrollo | PHP built-in server (`php -S localhost:3000 router.php`) |
+| QR | `qrcode` npm package |
+| Gráficas | Chart.js |
+| Fuentes | Inter + Merriweather (Google Fonts) |
+
+---
+
+## Arquitectura de directorios
+
+```
+asistencia-frontend/
+├── config/
+│   ├── database.php          # Conexión MySQL (getConnection)
+│   ├── auth_check.php        # Verificación de sesión
+│   ├── role_check.php        # requireRole()
+│   └── partials/             # head.php, footer.php, navbar.php,
+│                             # student_appbar.php, student_footer.php, sidebar.php
+├── database/
+│   ├── schema_v3.sql         # Schema completo para instalación limpia ← usar este
+│   ├── migrate_v5.sql        # Alumnos.idGrupo → nullable
+│   └── migrate_v6.sql        # Campos de perfil + onboarding_ok
+├── modules/
+│   ├── auth/                 # Login, registro, recuperación de contraseña
+│   ├── admin/                # Usuarios, grupos, materias, estudiantes
+│   ├── docente/              # Dashboard, registro de asistencia, historial
+│   ├── estudiante/           # Dashboard, historial, onboarding
+│   └── control_escolar/      # Consultas y reportes (scope por campus)
+├── public/
+│   ├── index.php             # Landing page
+│   └── assets/
+│       ├── img/              # Logo ITSZ SVG y otros
+│       └── bundle/           # Archivos generados por Vite (no editar)
+├── src/
+│   ├── css/main.css          # Estilos globales + componentes Tailwind
+│   └── js/
+│       ├── main.js           # Entry point Vite — enruta módulos por data-page
+│       ├── api.js            # request(), requestJson(), showMsg()
+│       └── modules/          # Un archivo JS por vista
+├── router.php                # Router para PHP built-in server
+└── vite.config.js
 ```
 
-Si aun no tienen el repo en su maquina:
+---
+
+## Instalación y configuración
+
+### Requisitos previos
+
+- PHP 8.1 o superior con extensiones: `mysqli`, `mbstring`, `json`
+- MySQL 8.0 o superior
+- Node.js 18 o superior
+- Composer (opcional, no requerido actualmente)
+
+### 1. Clonar el repositorio
 
 ```bash
-git clone <URL_DEL_REPO>
+git clone https://github.com/joseorteha/asistencia-frontend.git
 cd asistencia-frontend
 ```
 
-## 2) Pasos para cada compañero (desarrollador)
+### 2. Configurar la base de datos
 
-Primero actualizar `main` local:
-
-```bash
-git checkout main
-git pull origin main
-```
-
-Crear rama de trabajo:
+Edita `config/database.php` con tus credenciales MySQL y ejecuta el schema limpio:
 
 ```bash
-git checkout -b feature/nombrepersona-nombremodulo
+mysql -u root -p < database/schema_v3.sql
 ```
 
-Crear carpeta personal y agregar modulo:
+> Si ya tienes una base de datos con datos, ejecuta solo las migraciones pendientes (`migrate_v5.sql`, `migrate_v6.sql`) y luego:
+> ```sql
+> UPDATE Alumnos SET onboarding_ok = 1 WHERE idGrupo IS NOT NULL;
+> ```
+
+### 3. Instalar dependencias y compilar assets
 
 ```bash
-mkdir nombrepersona
-# Copia aqui tus archivos del modulo
+npm install
+npm run build
 ```
 
-Guardar cambios y subir:
+### 4. Levantar el servidor de desarrollo
 
 ```bash
-git add .
-git commit -m "Agrega modulo X en carpeta nombrepersona"
-git push -u origin feature/nombrepersona-nombremodulo
+php -S localhost:3000 router.php
 ```
 
-Despues abrir Pull Request (PR) hacia `integracion`.
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
 
-## 3) Pasos para ustedes (integradores)
+> **Nota:** Cada vez que modifiques archivos en `src/`, ejecuta `npm run build` para regenerar el bundle.
 
-Crear rama de integracion una vez:
+---
+
+## Portales de acceso
+
+| Portal | URL | Roles |
+|---|---|---|
+| Portal de Alumnos | `/modules/auth/views/login.php` | `estudiante` |
+| Portal Institucional | `/modules/auth/views/staff.php` | `admin`, `docente`, `control_escolar` |
+
+Los alumnos se auto-registran con su correo institucional (`matricula@zongolica.tecnm.mx`).
+Las cuentas de docentes y control escolar las crea el administrador.
+
+---
+
+## Base de datos — tablas principales
+
+| Tabla | Descripción |
+|---|---|
+| `Usuarios` | Todos los usuarios del sistema (todos los roles) |
+| `Grupos` | Grupos académicos (campus, carrera, semestre) |
+| `Materias` | Catálogo de materias |
+| `GruposMaterias` | Relación grupo × materia × docente × horario |
+| `Alumnos` | Perfil del alumno: grupo, matrícula, avatar, preferencias, onboarding |
+| `Asistencias` | Registro de asistencia por alumno, materia y fecha |
+| `Configuracion` | Parámetros del sistema (ciclo activo, % mínimo, etc.) |
+
+---
+
+## Scripts npm disponibles
 
 ```bash
-git checkout main
-git pull origin main
-git checkout -b integracion
-git push -u origin integracion
+npm run build    # Compila y minifica para producción
+npm run dev      # Servidor Vite en modo desarrollo (puerto 5173)
 ```
 
-Integrar ramas en `integracion` (por PR o por terminal):
+---
 
-```bash
-git checkout integracion
-git pull origin integracion
-git merge origin/feature/juan-modulo-login
-git merge origin/feature/maria-modulo-reportes
-git push origin integracion
-```
+## Equipo de desarrollo
 
-## 4) Si hay conflictos (normal)
+Proyecto desarrollado por estudiantes de **Ingeniería en Sistemas Computacionales — 9° Semestre**, ITSZ (2025–2026).
 
-1. Ver archivos en conflicto:
+| Nombre | Rol principal |
+|---|---|
+| Reinaldo Ajactle Choncoa | Desarrollo |
+| Arlyn Alfaro Dominguez | Desarrollo |
+| Hector Ayohua Quechulpa | Desarrollo |
+| Blanca Rosa Diaz Hernandez | Desarrollo |
+| Luis Almir Dominguez Puertos | Desarrollo |
+| Luis Adrian Gutierrez Atlahua | Desarrollo |
+| Alejandro Hernandez Tepole | Desarrollo |
+| Kevin Emanuel Ixmatlahua Barojas | Desarrollo |
+| Jose Bernadino Tlehuactle Ortega | Desarrollo |
+| Araceli Tlehuactle Tepole | Desarrollo |
+| **Jesus Alberto Rodriguez Puertos** | **Integrador / Arquitectura** |
 
-```bash
-git status
-```
+Ver [CONTRIBUTORS.md](CONTRIBUTORS.md) para el detalle completo de contribuciones.
 
-2. Abrir los archivos y resolver las partes marcadas con:
+---
 
-- `<<<<<<<`
-- `=======`
-- `>>>>>>>`
+## Licencia
 
-3. Guardar y confirmar:
+Este proyecto está protegido bajo una licencia de uso académico. Consulta el archivo [LICENSE](LICENSE) para más información.
 
-```bash
-git add .
-git commit -m "Resuelve conflictos de integracion"
-git push
-```
-
-## 5) Merge final a main
-
-Cuando todo funcione en `integracion`:
-
-1. Crear PR de `integracion` hacia `main`.
-2. Revisar en equipo.
-3. Hacer merge a `main`.
-
-## Reglas simples del equipo
-
-- Una rama por modulo.
-- Commits pequenos y claros.
-- Hacer `git pull` antes de empezar a trabajar.
-- Nunca hacer push directo a `main`.
-- Todo cambio entra por PR.
+© 2025–2026 Equipo de Desarrollo ISC — ITSZ. Todos los derechos reservados.
